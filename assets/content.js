@@ -24,12 +24,13 @@ window.addEventListener("message", (event) => {
       ? event.data.shopifyObject
       : false;
     const boostObjects = event.data.boostObjects;
-    console.log(JSON.parse(shopifyObject));
+    console.log(JSON.parse(shopifyObject), window.location);
 
     chrome.runtime.sendMessage(
       {
         action: "sendShopifyInfo",
-        data: shopifyObject,
+        shopifyInfo: shopifyObject,
+        location: window.location,
       },
       (response) => {
         console.log(response);

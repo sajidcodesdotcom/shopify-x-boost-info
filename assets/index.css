@@ -1,0 +1,56 @@
+body {
+  min-width: 320px;
+  padding-inline: 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+
+li:hover input {
+  border: 1px solid black;
+}
+
+li:hover .title {
+  color: black;
+}
+
+li .title {
+  font-weight: bold;
+  word-wrap: no-wrap;
+  flex-grow: 1;
+  flex-shrink: 0;
+  color: #323232db;
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  border: 1px dotted #525252a3;
+  padding: 5px;
+  border-radius: 10px;
+  max-width: 170px;
+}
+
+input::selection {
+  background: #00000030;
+}
+
+.copy {
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 3px 5px;
+}
