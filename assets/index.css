@@ -30,7 +30,6 @@ li .title {
   font-weight: bold;
   word-wrap: no-wrap;
   flex-grow: 1;
-  flex-shrink: 0;
   color: #323232db;
 }
 
@@ -38,7 +37,12 @@ button {
   cursor: pointer;
 }
 
-input {
+a {
+  overflow-wrap: break-word;
+}
+
+input,
+a {
   border: 1px dotted #525252a3;
   padding: 5px;
   border-radius: 10px;

@@ -15,23 +15,25 @@ window.addEventListener("load", () => {
 console.log("inside content.jsk");
 
 window.addEventListener("message", (event) => {
-	console.log("inside messageevent Listener");
-	hi = true;
-	if (event.source !== window) return;
+	console.log("inside messageevent Listener", event.source, window);
 
 	if (event.data.type && event.data.type === "from_page") {
 		const shopifyObject = event.data.shopifyObject
 			? event.data.shopifyObject
 			: false;
-		const boostObjects = event.data.boostObjects;
+		const boostVersions = event.data.boostVersions;
 		const location = JSON.stringify(window.location);
-		console.log(JSON.parse(shopifyObject), location);
+		const parsedShopifyObject = JSON.parse(shopifyObject);
+		console.log(JSON.parse(shopifyObject), location, boostVersions);
 
-		chrome.storage.local.set({
-			dataForPopup200: {
-				shopifyInfo: shopifyObject,
-				location: location,
-			},
-		});
+		if (parsedShopifyObject) {
+			chrome.storage.local.set({
+				dataForPopup200: {
+					shopifyInfo: shopifyObject,
+					location: location,
+					boostVersions,
+				},
+			});
+		}
 	}
 });

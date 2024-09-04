@@ -12,3 +12,13 @@
 //   }
 //   return true;
 // });
+//
+//
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+	// Check if the page has finished loading
+	if (changeInfo.status === "complete" && tab.active) {
+		// Send a message to the popup that the page is fully loaded
+		chrome.runtime.sendMessage({ action: "pageLoaded", tabId });
+	}
+});

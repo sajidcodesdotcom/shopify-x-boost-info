@@ -32,7 +32,7 @@ const buildInfoToCopyHTML = (info) => {
 	for (let i of info) {
 		const [title, value] = i.split("->");
 		html += `<li>
-            <span class="title">${title}:</span>
+            <span class="title">${title}: </span>
             <input type="text" value="${value}" readonly>
             <button class="copy">Copy</button></li>`;
 	}
@@ -61,51 +61,115 @@ const buildHTML = (info) => {
 	let html = `<ul> <h1>Shopify Info:</h1>`;
 	html += buildInfoToCopyHTML(shopifyCopyInfo);
 	html += buildInfoToRedirectHTML(shopifyRedirectInfo);
+	html += buildInfoToCopyHTML(boostCopyInfo);
+	html += buildInfoToRedirectHTML(boostRedirectInfo);
 	html += `</ul>`;
 
 	return html;
 };
 
-const constructPreviewLink = (location, id) => {
+const constructAdminRedirectsLinks = async (URL, shopWithoutDomain) => {
 	try {
+		const response = await fetch(URL);
+		if (!response.ok) {
+		}
+		const data = await response.json();
+		console.log(data);
+		if (data.collection) {
+			const adminRedirectURL = `https://admin.shopify.com/store/${shopWithoutDomain}/collections/${data.collection.id}`;
+			return adminRedirectURL;
+		}
+		if (data.product) {
+			const adminRedirectURL = `https://admin.shopify.com/store/${shopWithoutDomain}/products/${data.product.id}`;
+			return adminRedirectURL;
+		}
+	} catch (error) {
+		console.log("Failed while fetching JSON from URL: ", error);
+	}
+};
+
+const constructURLLink = (location, id) => {
+	try {
+		const redirectLinks = {};
 		const currentURL = new URL(location.href);
+		const origin = currentURL.origin;
+		const collectionsAll = origin + "/collections/all";
+		redirectLinks.collections_all = collectionsAll;
 		currentURL.searchParams.set("preview_theme_id", id);
-		const updatedURL = currentURL.toString();
-		return updatedURL;
+		console.log(currentURL);
+
+		redirectLinks.preview_link = currentURL.toString();
+
+		currentURL.search = "";
+		if (
+			currentURL.pathname.includes("/products") ||
+			currentURL.pathname.includes("/collections")
+		) {
+			const jsonInfoLink = currentURL.toString() + ".json";
+			redirectLinks.current_page_JSON = jsonInfoLink;
+		}
+		console.log(redirectLinks);
+		return redirectLinks;
 	} catch (error) {
 		console.log(error);
 	}
 };
 
-const constructCollectionsAllLink = (location) => {
-	const currentURL = new URL(location.href);
-	const collectionsAll = currentURL.origin + "/collections/all";
-	return collectionsAll;
-};
-
-const prepareInfo = (data) => {
+const prepareInfo = async (data) => {
 	const shopifyInfo = JSON.parse(data.shopifyInfo);
 	const location = JSON.parse(data.location);
+	const boostVersions = JSON.parse(data.boostVersions);
 
 	let info = {
 		shopify: { copy: [], redirect: [] },
 		boost: { copy: [], redirect: [] },
 	};
-	for (let i in shopifyInfo) {
-		if (i == "shop") {
-			info.shopify.copy.push(`Shop-> ${shopifyInfo[i]}`);
+	for (let key in shopifyInfo) {
+		if (key == "shop") {
+			info.shopify.copy.push(`Shop->${shopifyInfo[key]}`);
 		}
-		if (i == "theme") {
-			info.shopify.copy.push(`Theme ID-> ${shopifyInfo[i].id}`);
-			info.shopify.copy.push(`Theme Name-> ${shopifyInfo[i].name}`);
-			info.shopify.copy.push(
-				`Preview Link-> ${constructPreviewLink(location, shopifyInfo[i].id)}`,
-			);
+		if (key == "theme") {
+			info.shopify.copy.push(`Theme ID->${shopifyInfo[key].id}`);
+			info.shopify.copy.push(`Theme Name->${shopifyInfo[key].name}`);
 		}
 	}
-	info.shopify.redirect.push(
-		`Collections/all-> ${constructCollectionsAllLink(location)}`,
+	info.shopify.copy.push(
+		`other->country:${shopifyInfo.country}, currency:${shopifyInfo.currency.active}`,
 	);
+
+	const redirectlinks = constructURLLink(location, shopifyInfo.theme.id);
+	for (let key in redirectlinks) {
+		if (key === "preview_link") {
+			info.shopify.copy.push(`${key}->${redirectlinks[key]}`);
+		} else {
+			info.shopify.redirect.push(`${key}->${redirectlinks[key]}`);
+		}
+	}
+
+	let versions = "";
+	for (let key in boostVersions) {
+		versions += "" + boostVersions[key] + ", ";
+	}
+
+	let shopWithoutDomain = shopifyInfo.shop.replace(".myshopify.com", "");
+
+	if (Object.values(boostVersions).length != 0) {
+		info.boost.copy.push(`Boost Versions Detected->${versions}`);
+		info.boost.redirect.push(
+			`Shopify Integration->https://admin.shopify.com/store/${shopWithoutDomain}/apps/product-filter-search/shopify-integration`,
+		);
+	}
+
+	await constructAdminRedirectsLinks(
+		redirectlinks.current_page_JSON,
+		shopWithoutDomain,
+	).then((response) => {
+		console.log(response);
+		if (response) {
+			info.shopify.redirect.push(`This Page Admin->${response}`);
+		}
+	});
+
 	return info;
 };
 
@@ -114,14 +178,15 @@ window.addEventListener("load", async () => {
 	const data = response.dataForPopup200;
 	console.log("got it in const data: ", data, !data.shopifyInfo);
 
-	const shopifyInfoElm = document.querySelector(".shopify-info");
+	const shopifyInfoElm = document.querySelector("#popup");
 
 	if (!data.shopifyInfo) {
-		shopifyInfoElm.innerHTML = "Refresh the page on the Shopify Store Front";
+		shopifyInfoElm.innerHTML =
+			"<h1>Refresh the page on the Shopify Store Front</h1>";
 		return;
 	}
 
-	const info = prepareInfo(data);
+	const info = await prepareInfo(data);
 
 	shopifyInfoElm.innerHTML = buildHTML(info);
 	handleCopyToClipboard();
