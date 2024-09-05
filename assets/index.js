@@ -3,7 +3,6 @@ const handleCopyToClipboard = () => {
 	buttons.forEach((button) => {
 		button.addEventListener("click", (e) => {
 			const parent = e.target.parentElement;
-			console.log(parent);
 			parent.querySelector("input").select();
 			document.execCommand("copy");
 			button.textContent = "Copied!";
@@ -19,7 +18,6 @@ const handleRedirects = () => {
 		link.addEventListener("click", (e) => {
 			e.preventDefault();
 			const url = e.target.getAttribute("data-url");
-			console.log("clicked: ", url);
 			if (url) {
 				chrome.tabs.create({ url: url });
 			}
@@ -74,7 +72,6 @@ const constructAdminRedirectsLinks = async (URL, shopWithoutDomain) => {
 		if (!response.ok) {
 		}
 		const data = await response.json();
-		console.log(data);
 		if (data.collection) {
 			const adminRedirectURL = `https://admin.shopify.com/store/${shopWithoutDomain}/collections/${data.collection.id}`;
 			return adminRedirectURL;
@@ -96,7 +93,6 @@ const constructURLLink = (location, id) => {
 		const collectionsAll = origin + "/collections/all";
 		redirectLinks.collections_all = collectionsAll;
 		currentURL.searchParams.set("preview_theme_id", id);
-		console.log(currentURL);
 
 		redirectLinks.preview_link = currentURL.toString();
 
@@ -108,7 +104,6 @@ const constructURLLink = (location, id) => {
 			const jsonInfoLink = currentURL.toString() + ".json";
 			redirectLinks.current_page_JSON = jsonInfoLink;
 		}
-		console.log(redirectLinks);
 		return redirectLinks;
 	} catch (error) {
 		console.log(error);
@@ -174,18 +169,7 @@ const prepareInfo = async (data) => {
 	return info;
 };
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-	if (message.action == "pageLoaded") {
-		document
-			.querySelector("#popup")
-			.insertAdjacentHTML(
-				"afterbegin",
-				'<h2 style="color: red;">"&#x26A0; You have toggled the popup while the page was loading, Please toggle again to ensure the information is relatad to the current store page </h2',
-			);
-	}
-});
-
-window.addEventListener("load", async () => {
+const main = async () => {
 	const response = await chrome.storage.local.get("dataForPopup200");
 	const data = response.dataForPopup200;
 
@@ -202,4 +186,24 @@ window.addEventListener("load", async () => {
 	shopifyInfoElm.innerHTML = buildHTML(info);
 	handleCopyToClipboard();
 	handleRedirects();
+};
+
+chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+	console.log("loading", message);
+	if (message.action == "pageStartedLoading") {
+		document.querySelector(".alert").innerHTML =
+			`<h3 style="color: red;">&#x26A0; You have toggled the popup while the page was loading,to ensure the information is relatad to the current store page, please toggle again once the page finishes loading 🔃 </h3>`;
+	}
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+	if (message.action == "pageLoaded") {
+		document.querySelector(".alert").innerHTML =
+			`<h3 style="color: red;">&#x26A0; You have toggled the popup while the page was loading,to ensure the information is relatad to the current store page, please toggle again once the page finishes loading 🔃 </h3>`;
+		main();
+	}
+});
+
+window.addEventListener("load", () => {
+	main();
 });

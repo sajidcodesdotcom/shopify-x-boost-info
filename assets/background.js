@@ -16,9 +16,16 @@
 //
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+	// Check if the page has started loading
+	if (changeInfo.status === "loading" && tab.active) {
+		// Send a message to the popup that the page has started loading
+		chrome.runtime.sendMessage({ action: "pageStartedLoading" });
+	}
 	// Check if the page has finished loading
 	if (changeInfo.status === "complete" && tab.active) {
 		// Send a message to the popup that the page is fully loaded
-		chrome.runtime.sendMessage({ action: "pageLoaded", tabId });
+		chrome.runtime.sendMessage({ action: "pageLoaded" });
 	}
+
+	return true;
 });
