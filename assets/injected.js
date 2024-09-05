@@ -12,8 +12,6 @@
 		}
 	}
 
-	console.log("running injected....");
-
 	const shopifyObject = JSON.stringify(window.Shopify);
 	boostVersions = JSON.stringify(boostVersions);
 

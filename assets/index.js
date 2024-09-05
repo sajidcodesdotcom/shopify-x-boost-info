@@ -160,23 +160,34 @@ const prepareInfo = async (data) => {
 		);
 	}
 
-	await constructAdminRedirectsLinks(
-		redirectlinks.current_page_JSON,
-		shopWithoutDomain,
-	).then((response) => {
-		console.log(response);
-		if (response) {
-			info.shopify.redirect.push(`This Page Admin->${response}`);
-		}
-	});
+	if (redirectlinks.current_page_JSON) {
+		await constructAdminRedirectsLinks(
+			redirectlinks.current_page_JSON,
+			shopWithoutDomain,
+		).then((response) => {
+			if (response) {
+				info.shopify.redirect.push(`This Page Admin->${response}`);
+			}
+		});
+	}
 
 	return info;
 };
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+	if (message.action == "pageLoaded") {
+		document
+			.querySelector("#popup")
+			.insertAdjacentHTML(
+				"afterbegin",
+				'<h2 style="color: red;">"&#x26A0; You have toggled the popup while the page was loading, Please toggle again to ensure the information is relatad to the current store page </h2',
+			);
+	}
+});
+
 window.addEventListener("load", async () => {
 	const response = await chrome.storage.local.get("dataForPopup200");
 	const data = response.dataForPopup200;
-	console.log("got it in const data: ", data, !data.shopifyInfo);
 
 	const shopifyInfoElm = document.querySelector("#popup");
 
@@ -191,6 +202,4 @@ window.addEventListener("load", async () => {
 	shopifyInfoElm.innerHTML = buildHTML(info);
 	handleCopyToClipboard();
 	handleRedirects();
-
-	console.log("data: ", data);
 });
