@@ -1,0 +1,1 @@
+A chrome extension to render Shopify store info, quick links and some info about Boost AI search and discovery app. This is to save our time in looking up the most common information and move quicker. 
