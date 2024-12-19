@@ -1,60 +1,64 @@
 body {
-  min-width: 320px;
-  padding-inline: 10px;
+    min-width: 320px;
+    padding-inline: 10px;
 }
 
 ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
 }
 
 li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 5px;
 }
 
 li:hover input {
-  border: 1px solid black;
+    border: 1px solid black;
 }
 
 li:hover .title {
-  color: black;
+    color: black;
 }
 
 li .title {
-  font-weight: bold;
-  word-wrap: no-wrap;
-  flex-grow: 1;
-  color: #323232db;
+    font-weight: bold;
+    word-wrap: no-wrap;
+    flex-grow: 1;
+    color: #323232db;
 }
 
 button {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 a {
-  overflow-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 input,
 a {
-  border: 1px dotted #525252a3;
-  padding: 5px;
-  border-radius: 10px;
-  max-width: 170px;
+    border: 1px dotted #525252a3;
+    padding: 5px;
+    border-radius: 10px;
+    max-width: 170px;
 }
 
 input::selection {
-  background: #00000030;
+    background: #00000030;
 }
 
 .copy {
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 3px 5px;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 3px 5px;
+}
+
+.alert {
+    font-weight: bold;
 }
