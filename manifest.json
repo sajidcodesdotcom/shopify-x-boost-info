@@ -17,7 +17,9 @@
         "assets/content.js"
       ],
       "matches": [
-        "<all_urls>"
+         "https://*.myshopify.com/*",
+          "https://*.shopify.com/*",
+          "https://*/*"
       ]
     }
   ],
@@ -25,8 +27,6 @@
     "service_worker": "assets/background.js"
   },
   "permissions": [
-    "activeTab",
-    "tabs",
     "scripting",
     "storage"
   ],
@@ -36,7 +36,9 @@
         "assets/injected.js"
       ],
       "matches": [
-        "<all_urls>"
+         "https://*.myshopify.com/*",
+          "https://*.shopify.com/*",
+          "https://*/*"
       ]
     }
   ]
