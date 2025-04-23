@@ -11,23 +11,37 @@
     <body>
         <div id="root">
             <div class="alert">
-                ℹ️ Information updates once the page has finished loading. The
+                Information updates once the page has finished loading. The
                 information will be displayed of the most recently previewed
                 theme.
             </div>
-            <hr>
             <section id="popup">
-                <h1 id="loading">Loading... ⏳</h1>
+                <div id="loading">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="loading-icon">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+                    </svg>
+                    Loading... ⏳
+                </div>
             </section>
         </div>
-        <small style="text-align: center">
+        <small>
             Built with ❤️ by
             <a
                 class="redirectLink"
                 href="#"
-                data-url="https://www.linkedin.com/in/sajidcodess/"
+                data-url="https://www.linkedin.com/in/sajidcodesdotcom/"
                 >Sajid</a
             >
         </small>
+
+        <style>
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .loading-icon {
+                animation: spin 1.5s linear infinite;
+            }
+        </style>
     </body>
 </html>

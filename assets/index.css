@@ -1,64 +1,330 @@
+:root {
+  --primary-color: #5563de;
+  --primary-hover: #4550c0;
+  --secondary-color: #f3f4f6;
+  --border-color: #e5e7eb;
+  --text-color: #374151;
+  --text-light: #6b7280;
+  --success-color: #10b981;
+  --radius: 8px;
+  --shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
 body {
-    min-width: 320px;
-    padding-inline: 10px;
+  min-width: 400px;
+  max-width: 500px;
+  padding: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  color: var(--text-color);
+  background-color: #f9fafb;
+  margin: 0;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 16px;
+  margin: 0 0 16px 0;
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 8px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h1::before {
+  content: '';
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%235563de" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0 0 20px 0;
+  background-color: white;
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--card-shadow);
 }
 
 li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 5px;
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  transition: all 0.2s ease;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
 }
 
-li:hover input {
-    border: 1px solid black;
+/* Add this new rule for list items containing redirect links */
+li.redirect-item {
+  grid-template-columns: 1fr;
 }
 
-li:hover .title {
-    color: black;
+li:hover {
+  background-color: #f9fafb;
+  border-color: var(--border-color);
+  box-shadow: var(--shadow);
 }
 
 li .title {
-    font-weight: bold;
-    word-wrap: no-wrap;
-    flex-grow: 1;
-    color: #323232db;
+  font-weight: 500;
+  color: var(--text-light);
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-button {
-    cursor: pointer;
+li:hover .title {
+  color: var(--text-color);
 }
 
+.title .icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+input, 
 a {
-    overflow-wrap: break-word;
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  font-size: 13px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
-input,
-a {
-    border: 1px dotted #525252a3;
-    padding: 5px;
-    border-radius: 10px;
-    max-width: 170px;
+input {
+  outline: none;
+  height: 36px;
 }
 
 input::selection {
-    background: #00000030;
+  background: rgba(85, 99, 222, 0.15);
 }
 
-.copy {
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 3px 5px;
+li:hover input,
+li:hover a {
+  border-color: var(--primary-color);
+  background-color: white;
+}
+
+button.copy {
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-color);
+  box-shadow: var(--shadow);
+  height: 36px;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+button.copy svg {
+  width: 16px;
+  height: 16px;
+}
+
+button.copy:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  box-shadow: var(--hover-shadow);
+}
+
+button.copy:hover svg path {
+  fill: white;
+}
+
+a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 36px;
+}
+
+a svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+a:hover {
+  text-decoration: none;
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-hover);
+}
+
+a:hover svg path {
+  fill: white;
+}
+
+a.redirectLink:hover {
+  background-color: var(--primary-hover);
 }
 
 .alert {
-    font-weight: bold;
+  font-weight: 500;
+  background-color: #e8f0fe;
+  padding: 14px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+  border-left: 4px solid var(--primary-color);
+  font-size: 14px;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.alert::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%235563de" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: contain;
+  flex-shrink: 0;
+}
+
+#root {
+  margin-bottom: 20px;
+}
+
+#loading {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-light);
+  background-color: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+small {
+  display: block;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+small a {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  padding: 2px 5px;
+  background: transparent;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+small a:hover {
+  background-color: rgba(85, 99, 222, 0.1);
+  color: var(--primary-hover);
+}
+
+/* Add section headers styling */
+section h1:first-child {
+  margin-top: 0;
+}
+
+/* Section divider styling */
+.section-divider {
+  height: 6px;
+  background: linear-gradient(to right, var(--primary-color), var(--primary-hover));
+  margin: 24px 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="%235563de" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
+  border: 3px solid var(--primary-color);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Styling for the copied state */
+button.copy.copied {
+  background-color: var(--success-color);
+  color: white;
+  border-color: var(--success-color);
+}
+
+button.copy.copied svg path {
+  fill: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  body {
+    padding: 12px;
+    min-width: 320px;
+  }
+  
+  li {
+    grid-template-columns: 1fr 1.5fr auto;
+    gap: 8px;
+  }
+  
+  ul {
+    padding: 12px;
+  }
 }
