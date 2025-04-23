@@ -95,6 +95,7 @@ const buildHTML = (info) => {
     html += `<div class="section-divider"></div>`;
     html += `<ul><h1>Boost App Info</h1>`;
     html += buildInfoToCopyHTML(boostCopyInfo);
+    html += `<div class="">Links Work if You are logged in to Store</div>`;
     html += buildInfoToRedirectHTML(boostRedirectInfo);
     html += `</ul>`;
   }
