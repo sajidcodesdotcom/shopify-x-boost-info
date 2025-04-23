@@ -142,8 +142,6 @@ button.copy {
   transition: all 0.2s ease;
   color: var(--text-color);
   box-shadow: var(--shadow);
-  height: 36px;
-  width: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,8 +318,8 @@ button.copy.copied svg path {
   }
   
   li {
-    grid-template-columns: 1fr 1.5fr auto;
-    gap: 8px;
+    grid-template-columns: 1fr 2fr auto;
+    gap: 5px;
   }
   
   ul {
