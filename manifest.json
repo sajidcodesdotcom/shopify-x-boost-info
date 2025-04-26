@@ -27,7 +27,6 @@
     "service_worker": "assets/background.js"
   },
   "permissions": [
-    "scripting",
     "storage"
   ],
   "web_accessible_resources": [
